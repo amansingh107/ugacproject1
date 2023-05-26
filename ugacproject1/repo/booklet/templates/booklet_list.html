@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Booklet List</title>
+</head>
+<body>
+    <h2>Booklet List</h2>
+    {% if user.is_superuser %}
+    <a href="{% url 'booklet_upload' %}">Add New Booklet</a><br><br>
+    {% endif %}
+    {% for booklet in booklets %}
+        <p>Title: {{ booklet.title }}</p>
+        <p>Date Uploaded: {{ booklet.uploaded_at }}</p>
+        <a href="{{ booklet.file.url }}" download>Download</a>
+        {% if user.is_superuser %}
+            <form action="{% url 'booklet_delete' booklet.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <input type="submit" value="Delete">
+            </form>
+        {% endif %}
+        <hr>
+    {% endfor %}
+</body>
+</html>
+
